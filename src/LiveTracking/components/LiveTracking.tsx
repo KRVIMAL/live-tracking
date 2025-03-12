@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Loader } from "@googlemaps/js-api-loader";
 import { useSubscription, gql } from "@apollo/client";
 import {client} from "../../core-services/graphql/apollo-client"
-const GOOGLE_MAPS_API_KEY = "YOUR_GOOGLE_MAPS_API_KEY";
+const GOOGLE_MAPS_API_KEY = "AIzaSyAaZ1M_ofwVoLohowruNhY0fyihH9NpcI0";
 
 const TRACK_SUBSCRIPTION = gql`
   subscription Track($groupId: String!, $imeis: [String!], $topic: String) {
