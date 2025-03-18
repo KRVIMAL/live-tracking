@@ -1,26 +1,42 @@
-import { ApolloClient, InMemoryCache, split } from "@apollo/client";
-import { GraphQLWsLink } from "@apollo/client/link/subscriptions";
-import { createClient } from "graphql-ws";
+/* eslint-disable no-loop-func */
+/* eslint-disable no-console */
+import {
+  ApolloProvider,
+  ApolloClient,
+  InMemoryCache,
+  split,
+  from,
+} from "@apollo/client";
 import { getMainDefinition } from "@apollo/client/utilities";
+import { WebSocketLink } from "@apollo/client/link/ws";
+import { HttpLink } from "@apollo/client/link/http";
 
-const wsLink = new GraphQLWsLink(
-  createClient({
-    url: `ws://your-graphql-server/subscriptions`,
-  })
-);
+const httpLink = new HttpLink({
+  uri: `http://localhost:9090/graphql`,
+});
 
-const splitLink = split(
-  ({ query }:any) => {
+const wsLink = new WebSocketLink({
+  uri: `ws://localhost:9090/subscriptions`,
+  options: {
+    reconnect: true,
+  },
+});
+
+const link = split(
+  ({ query }) => {
     const definition = getMainDefinition(query);
     return (
       definition.kind === "OperationDefinition" &&
       definition.operation === "subscription"
     );
   },
-  wsLink
+  wsLink,
+  httpLink
 );
 
-export const client = new ApolloClient({
-  link: splitLink,
+export const liveClient = new ApolloClient({
+  link: from([link]),
   cache: new InMemoryCache(),
 });
+
+export { ApolloProvider };

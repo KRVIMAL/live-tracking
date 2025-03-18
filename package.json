@@ -16,14 +16,19 @@
     "axios": "^1.8.1",
     "graphql": "^16.10.0",
     "graphql-ws": "^6.0.4",
+    "kafkajs": "^2.2.4",
+    "lucide-react": "^0.482.0",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "subscriptions-transport-ws": "^0.11.0",
+    "ws": "^8.18.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.21.0",
     "@types/google.maps": "^3.58.1",
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.4",
+    "@types/ws": "^8.18.0",
     "@vitejs/plugin-react": "^4.3.4",
     "autoprefixer": "^10.4.20",
     "eslint": "^9.21.0",
