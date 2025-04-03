@@ -1,7 +1,9 @@
 import { gql, useSubscription } from "@apollo/client";
 import toast, { Toaster } from "react-hot-toast";
 import { useEffect, useRef } from "react";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import LiveTracking from "./LiveTracking/components/LiveTracking";
+import { useParams } from "react-router-dom";
 
 // GraphQL subscription for tracking
 const TRACK_SUBSCRIPTION = gql`
@@ -12,13 +14,15 @@ const TRACK_SUBSCRIPTION = gql`
 
 const App: React.FC = () => {
   // Use a ref to store the last received alert to prevent duplicates
+  const params = useParams();
+  const imei = params.imei;
   const lastAlertRef = useRef<Record<string, string>>({});
 
   // Subscribe to live alerts
   const { data: alertData } = useSubscription(TRACK_SUBSCRIPTION, {
     variables: {
       groupId: "live-alert-consumer",
-      imeis: ["700070635323"],
+      imeis: [imei],
       topic: "live_alert",
     },
     onError: (error) => {
@@ -30,7 +34,7 @@ const App: React.FC = () => {
   const { data: trackingData } = useSubscription(TRACK_SUBSCRIPTION, {
     variables: {
       groupId: "live-tracking-consumer",
-      imeis: ["700070635323"],
+      imeis: [imei],
       topic: "live_tracking",
     },
     onError: (error) => {
@@ -101,15 +105,24 @@ const App: React.FC = () => {
           },
         }}
       />
-      <h1>Live Alert Testing</h1>
-      <div>
-        <h2>Status</h2>
-        <p>Live Alert Service: {alertData ? "Connected" : "Connecting..."}</p>
-        <p>
-          Live Tracking Service: {trackingData ? "Connected" : "Connecting..."}
-        </p>
-      </div>
-      <LiveTracking />
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={
+            <>
+              <h1>Live Alert Testing</h1>
+              <div>
+                <h2>Status</h2>
+                <p>Live Alert Service: {alertData ? "Connected" : "Connecting..."}</p>
+                <p>
+                  Live Tracking Service: {trackingData ? "Connected" : "Connecting..."}
+                </p>
+              </div>
+              <LiveTracking />
+            </>
+          } />
+          <Route path="/live-tracking/:imei" element={<LiveTracking />} />
+        </Routes>
+      </BrowserRouter>
     </div>
   );
 };

@@ -12,6 +12,7 @@ import {
   Trash2,
   Wifi,
 } from "lucide-react";
+import { useParams } from "react-router-dom";
 
 // Replace with your actual API key or use environment variable
 const GOOGLE_MAPS_API_KEY = "AIzaSyAaZ1M_ofwVoLohowruNhY0fyihH9NpcI0";
@@ -39,6 +40,8 @@ interface TrackingData {
 }
 
 const LiveTracking: React.FC = () => {
+  const params = useParams();
+  const imei = params.imei;
   const mapRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<google.maps.Map | null>(null);
   const markerRef = useRef<google.maps.Marker | null>(null);
@@ -65,7 +68,7 @@ const LiveTracking: React.FC = () => {
   const { data, loading, error } = useSubscription(TRACK_SUBSCRIPTION, {
     variables: {
       groupId: "live-tracking-consumer",
-      imeis: ["700070635323"],
+      imeis: [imei],
       topic: "live_tracking",
     },
   });
