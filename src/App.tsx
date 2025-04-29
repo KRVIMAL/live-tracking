@@ -22,7 +22,7 @@ const LiveTrackingPage = () => {
   const { data: alertData } = useSubscription(TRACK_SUBSCRIPTION, {
     variables: {
       groupId: "live-alert-consumer",
-      imeis: [imei],
+      imeis: ['7571022093'],
       topic: "live_alert",
     },
     onError: (error) => {

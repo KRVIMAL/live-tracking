@@ -68,7 +68,7 @@ const LiveTracking: React.FC = () => {
   const { data, loading, error } = useSubscription(TRACK_SUBSCRIPTION, {
     variables: {
       groupId: "live-tracking-consumer",
-      imeis: [imei],
+      imeis: ['7571022093'],
       topic: "live_tracking",
     },
   });
